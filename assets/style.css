@@ -386,3 +386,7 @@ a.card:hover { transform: translateY(-5px); color: inherit; }
 
 /* ---- bandeiras ---- */
 .bandeira { display: inline-block; width: 18px; height: 12px; object-fit: cover; border-radius: 2px; margin-right: 6px; vertical-align: -1px; box-shadow: 0 0 0 1px rgba(60,40,20,.15); }
+
+.sugestao-status { margin: 10px 0 0; font-weight: 600; min-height: 1.4em; }
+.sugestao-status.ok { color: #2f6b3a; }
+.sugestao-status.erro { color: #a3361f; }
