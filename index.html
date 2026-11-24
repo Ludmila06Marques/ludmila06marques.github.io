@@ -189,11 +189,11 @@
   <div class="sugestao" id="sugira">
    <h3 class="sub-titulo">Onde você gostaria de ver a gente?</h3>
    <p class="secao-sub">Conhece uma estrada, um vilarejo ou um camping que a gente precisa conhecer? Conta aqui que a gente lê tudo.</p>
-   <form action="https://formsubmit.co/instimila@gmail.com" method="POST">
-    <input type="hidden" name="_subject" value="Nova sugestão de destino pelo site">
-    <input type="hidden" name="_template" value="table">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+   <form id="form-sugestao" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="860f723a-1445-4492-a183-309f2ad3ff8c">
+    <input type="hidden" name="subject" value="Nova sugestão de destino pelo site">
+    <input type="hidden" name="from_name" value="Gustaventuras da Lud">
+    <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
     <label>Destino<input type="text" name="destino" required placeholder="Ex.: Transfagarasan, Romênia"></label>
     <label>Por que a gente deveria ir?<textarea name="mensagem" rows="4" placeholder="Conta um pouco sobre o lugar"></textarea></label>
     <div class="sugestao-linha">
@@ -201,6 +201,7 @@
      <label>Seu e-mail<input type="email" name="email" placeholder="Opcional, se quiser resposta"></label>
     </div>
     <button class="botao" type="submit">Enviar sugestão</button>
+    <p class="sugestao-status" role="status" aria-live="polite"></p>
    </form>
   </div>
  </div>
@@ -215,5 +216,23 @@
  </div>
 </footer>
 
+<script>
+(function(){
+ var f=document.getElementById('form-sugestao'); if(!f) return;
+ var st=f.querySelector('.sugestao-status'), bt=f.querySelector('button[type=submit]');
+ f.addEventListener('submit',function(e){
+  e.preventDefault();
+  bt.disabled=true; bt.textContent='Enviando...'; st.textContent=''; st.className='sugestao-status';
+  fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)})
+   .then(function(r){return r.json();})
+   .then(function(j){
+    if(j.success){ f.reset(); st.textContent='Valeu! Sua sugestão chegou pra gente.'; st.className='sugestao-status ok'; }
+    else { throw new Error(j.message); }
+   })
+   .catch(function(){ st.textContent='Não deu pra enviar agora. Tenta de novo daqui a pouco ou manda no Instagram (@ludmrqs).'; st.className='sugestao-status erro'; })
+   .finally(function(){ bt.disabled=false; bt.textContent='Enviar sugestão'; });
+ });
+})();
+</script>
 </body>
 </html>
